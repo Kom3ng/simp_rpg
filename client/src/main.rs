@@ -1,11 +1,14 @@
-use bevy::prelude::{App, AssetServer, Camera2d, Commands, Res, Startup};
+mod ui;
+mod global;
+
 use bevy::DefaultPlugins;
 use bevy::prelude::AppExtStates;
-use simp_rpg::client::menu::MenuPlugin;
-use simp_rpg::client::splash::SplashPlugin;
-use simp_rpg::{FontHandles, GameState};
+use bevy::prelude::{App, AssetServer, Camera2d, Commands, Res, Startup};
+use crate::global::{FontHandles, GameState};
+use crate::ui::menu::MenuPlugin;
+use crate::ui::splash::SplashPlugin;
 
-fn main(){
+fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .add_plugins(SplashPlugin)
@@ -15,7 +18,7 @@ fn main(){
         .run();
 }
 
-fn setup(mut commands: Commands, asset_server: Res<AssetServer>){
+fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     let regular_font = asset_server.load("fonts/LXGWWenKai-Medium.ttf");
     let bold_font = asset_server.load("fonts/LXGWWenKai-Medium.ttf");
 

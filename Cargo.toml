@@ -1,7 +1,6 @@
-[package]
-name = "simp_rpg"
-version = "0.1.0"
-edition = "2024"
+[workspace]
+resolver = "3"
+members = ["common", "server", "client"]
 
-[dependencies]
+[workspace.dependencies]
 bevy = "0.16.1"

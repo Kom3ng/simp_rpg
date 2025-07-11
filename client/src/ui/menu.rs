@@ -1,6 +1,6 @@
-use crate::{FontHandles, GameState};
 use bevy::app::App;
 use bevy::prelude::*;
+use crate::global::{FontHandles, GameState};
 
 pub struct MenuPlugin;
 
@@ -51,52 +51,9 @@ fn menu_setup(mut commands: Commands, font_handles: Res<FontHandles>) {
                 },
                 TextColor(Color::WHITE),
             ),
-            (
-                Button,
-                Node {
-                    width: Val::Px(150.0),
-                    height: Val::Px(65.0),
-                    border: UiRect::all(Val::Px(5.0)),
-                    justify_content: JustifyContent::Center,
-                    align_items: AlignItems::Center,
-                    ..default()
-                },
-                BorderColor(Color::BLACK),
-                BorderRadius::MAX,
-                BackgroundColor(Color::WHITE),
-                MenuButtonAction::Settings,
-                children![(
-                    Text::new("设置"),
-                    TextColor(Color::BLACK),
-                    TextFont {
-                        font: font_handles.regular.clone(),
-                        ..default()
-                    }
-                )],
-            ),
-            (
-                Button,
-                Node {
-                    width: Val::Px(150.0),
-                    height: Val::Px(65.0),
-                    border: UiRect::all(Val::Px(5.0)),
-                    justify_content: JustifyContent::Center,
-                    align_items: AlignItems::Center,
-                    ..default()
-                },
-                BorderColor(Color::BLACK),
-                BorderRadius::MAX,
-                BackgroundColor(Color::WHITE),
-                MenuButtonAction::Quit,
-                children![(
-                    Text::new("退出"),
-                    TextColor(Color::BLACK),
-                    TextFont {
-                        font: font_handles.regular.clone(),
-                        ..default()
-                    },
-                )],
-            )
+            common_button("开始", MenuButtonAction::Play, &font_handles),
+            common_button("设置", MenuButtonAction::Settings, &font_handles),
+            common_button("退出", MenuButtonAction::Quit, &font_handles)
         ],
     ));
 }
@@ -127,4 +84,30 @@ fn button_system(
             _ => {}
         }
     }
+}
+
+fn common_button(text: &str,action: MenuButtonAction ,font_handles: &Res<FontHandles>) -> impl Bundle {
+    (
+        Button,
+        Node {
+            width: Val::Px(150.0),
+            height: Val::Px(65.0),
+            border: UiRect::all(Val::Px(5.0)),
+            justify_content: JustifyContent::Center,
+            align_items: AlignItems::Center,
+            ..default()
+        },
+        BorderColor(Color::BLACK),
+        BorderRadius::MAX,
+        BackgroundColor(Color::WHITE),
+        action,
+        children![(
+                    Text::new(text),
+                    TextColor(Color::BLACK),
+                    TextFont {
+                        font: font_handles.regular.clone(),
+                        ..default()
+                    },
+                )],
+    )
 }
