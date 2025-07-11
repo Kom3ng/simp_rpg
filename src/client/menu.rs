@@ -7,7 +7,8 @@ pub struct MenuPlugin;
 impl Plugin for MenuPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(GameState::Menu), menu_setup)
-            .add_systems(Update, button_system.run_if(in_state(GameState::Menu)));
+            .add_systems(Update, button_system.run_if(in_state(GameState::Menu)))
+            .add_systems(OnExit(GameState::Menu), menu_teardown);
     }
 }
 
@@ -19,6 +20,12 @@ enum MenuButtonAction {
     Play,
     Settings,
     Quit,
+}
+
+fn menu_teardown(mut commands: Commands, menu_ui: Query<Entity, With<MenuUIRoot>>) {
+    for entity in menu_ui.iter() {
+        commands.entity(entity).despawn();
+    }
 }
 
 fn menu_setup(mut commands: Commands, font_handles: Res<FontHandles>) {
